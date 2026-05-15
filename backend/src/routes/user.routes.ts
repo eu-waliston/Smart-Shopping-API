@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const userRoutes = Router();
 
@@ -21,6 +22,8 @@ userRoutes.post("/users", (req, res) => userController.create(req, res));
  *     summary: List users
  *     tags: [Users]
  */
-userRoutes.get("/users", (req, res) => userController.findAll(req, res));
+userRoutes.get("/users", authMiddleware, (req, res) =>
+  userController.findAll(req, res),
+);
 
 export { userRoutes };
