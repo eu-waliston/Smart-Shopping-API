@@ -1,4 +1,5 @@
 import { UserRepository } from "../repositories/user.repository";
+import { AppError } from "../errors/app-error";
 
 interface CreateUserDTO {
   name: string;
@@ -12,7 +13,7 @@ export class UserService {
     const userAlreadyExists = await this.userRepository.findByEmail(email);
 
     if (userAlreadyExists) {
-      throw new Error("User already exists");
+      throw new AppError("User already exists", 409);
     }
 
     const user = await this.userRepository.create({
