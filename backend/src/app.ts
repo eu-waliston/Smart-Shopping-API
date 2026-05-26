@@ -8,6 +8,7 @@ import { swaggerSpec } from "./docs/swagger";
 
 import { userRoutes } from "./routes/user.routes";
 import { authRoutes } from "./routes/auth.routes";
+import { shoppingRoutes } from "./routes/shopping.routes";
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(authRoutes);
 
 app.use(userRoutes);
+
+app.use(shoppingRoutes);
 
 app.get("/health", (req, res) => {
   return res.status(200).json({

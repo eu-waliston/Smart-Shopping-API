@@ -92,4 +92,28 @@ describe("Users", () => {
 
     expect(response.status).toBe(401);
   });
+
+  it("should create shopping list", async () => {
+    const user = await request(app).post("/users").send({
+      name: "Tonton",
+      email: "shop@email.com",
+      password: "123456",
+    });
+
+    const login = await request(app).post("/login").send({
+      email: "shop@email.com",
+      password: "123456",
+    });
+
+    const token = login.body.data.token;
+
+    const response = await request(app)
+      .post("/shopping-lists")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        title: "Compras do mês",
+      });
+
+    expect(response.status).toBe(201);
+  });
 });

@@ -12,4 +12,30 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  shoppingLists ShoppingList[]
+}
+
+model ShoppingList {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  items ShoppingItem[]
+}
+
+model ShoppingItem {
+  id       String  @id @default(uuid())
+  name     String
+  quantity Int
+  checked  Boolean @default(false)
+  category String?
+
+  createdAt DateTime @default(now())
+
+  listId String
+  list   ShoppingList @relation(fields: [listId], references: [id])
 }
