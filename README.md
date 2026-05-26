@@ -226,8 +226,8 @@ http://localhost:3000/api-docs
 
 # 👨‍💻 Autor
 
-## Desenvolvido por Tonton 🚀
+#### Desenvolvido por Tonton 🚀
 
 # 📄 Licença
 
-## Este projeto está sob licença MIT.
+#### Este projeto está sob licença MIT.
