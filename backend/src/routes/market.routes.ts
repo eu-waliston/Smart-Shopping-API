@@ -44,4 +44,10 @@ marketRoutes.get(
   asyncHandler(promotionController.findByCategory.bind(promotionController)),
 );
 
+marketRoutes.get(
+  "/markets/nearby",
+  authMiddleware,
+  asyncHandler(marketController.nearby.bind(marketController)),
+);
+
 export { marketRoutes };

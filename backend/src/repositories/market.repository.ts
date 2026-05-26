@@ -14,4 +14,12 @@ export class MarketRepository {
       },
     });
   }
+
+  async findNearBy() {
+    return prisma.market.findMany({
+      include: {
+        promotions: true,
+      },
+    });
+  }
 }

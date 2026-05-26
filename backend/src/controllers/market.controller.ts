@@ -26,4 +26,16 @@ export class MarketController {
       data: markets,
     });
   }
+
+  async nearby(req: Request, res: Response) {
+    const latitude = Number(req.query.latitude);
+    const longitude = Number(req.query.longitude);
+
+    const markets = await this.service.findNearby(latitude, longitude);
+
+    return res.status(200).json({
+      status: "success",
+      data: markets,
+    });
+  }
 }
