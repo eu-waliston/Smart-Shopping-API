@@ -39,3 +39,31 @@ model ShoppingItem {
   listId String
   list   ShoppingList @relation(fields: [listId], references: [id])
 }
+
+model Market {
+  id      String @id @default(uuid())
+  name    String
+  city    String
+  address String
+
+  latitude  Float?
+  longitude Float?
+
+  createdAt DateTime @default(now())
+
+  promotions Promotion[]
+}
+
+model Promotion {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  category    String?
+  price       Float
+  imageUrl    String?
+  expiresAt   DateTime?
+
+  createdAt DateTime @default(now())
+  marketId  String
+  market    Market   @relation(fields: [marketId], references: [id])
+}
