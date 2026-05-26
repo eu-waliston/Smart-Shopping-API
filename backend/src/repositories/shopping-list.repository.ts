@@ -7,7 +7,7 @@ interface CreateListDTO {
 
 export class ShoppingListRepository {
   async create(data: CreateListDTO) {
-    return prisma.shoppingList.crate({
+    return prisma.shoppingList.create({
       data,
     });
   }
