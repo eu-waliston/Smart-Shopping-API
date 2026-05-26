@@ -10,7 +10,7 @@ export class PromotionRepository {
   async findAll() {
     return prisma.promotion.findMany({
       include: {
-        markert: true,
+        market: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -24,7 +24,7 @@ export class PromotionRepository {
         category,
       },
       include: {
-        markert: true,
+        market: true,
       },
     });
   }

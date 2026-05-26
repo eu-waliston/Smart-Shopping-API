@@ -6,30 +6,42 @@ import { MarketController } from "../controllers/market.controller";
 
 import { PromotionController } from "../controllers/promotion.controller";
 
+import { asyncHandler } from "../utils/async-handler";
+
 const marketRoutes = Router();
 
 const marketController = new MarketController();
 
 const promotionController = new PromotionController();
 
-marketRoutes.post("/markets", authMiddleware, (req, res) => {
-  marketController.create(req, res);
-});
-marketRoutes.get("/markets", authMiddleware, (req, res) => {
-  marketController.findAll(req, res);
-});
-marketRoutes.post("/promotions", authMiddleware, (req, res) => {
-  promotionController.create(req, res);
-});
-marketRoutes.get("/promotions", authMiddleware, (req, res) => {
-  promotionController.findAll(req, res);
-});
+marketRoutes.post(
+  "/markets",
+  authMiddleware,
+  asyncHandler(marketController.create.bind(marketController)),
+);
+
+marketRoutes.get(
+  "/markets",
+  authMiddleware,
+  asyncHandler(marketController.findAll.bind(marketController)),
+);
+
+marketRoutes.post(
+  "/promotions",
+  authMiddleware,
+  asyncHandler(promotionController.create.bind(promotionController)),
+);
+
+marketRoutes.get(
+  "/promotions",
+  authMiddleware,
+  asyncHandler(promotionController.findAll.bind(promotionController)),
+);
+
 marketRoutes.get(
   "/promotions/category/:category",
   authMiddleware,
-  (req, res) => {
-    promotionController.findByCategory(req, res);
-  },
+  asyncHandler(promotionController.findByCategory.bind(promotionController)),
 );
 
 export { marketRoutes };

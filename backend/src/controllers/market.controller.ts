@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 import { createMarketSchema } from "../schemas/market.schema";
 
@@ -7,7 +7,7 @@ import { MarketService } from "../services/market.service";
 export class MarketController {
   private service = new MarketService();
 
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response, next: NextFunction) {
     const body = createMarketSchema.parse(req.body);
 
     const market = await this.service.create(body);

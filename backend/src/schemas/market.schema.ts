@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const createMarketSchema = z.object({
-  name: z.string(),
-  city: z.string(),
-  address: z.string(),
+  name: z.string().min(1, "Name is required"),
+  city: z.string().min(1, "City is required"),
+  address: z.string().min(1, "Address is required"),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
 });
