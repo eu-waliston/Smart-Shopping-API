@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { errorMiddleware } from "./middlewares/error.middleware";
 
 import express from "express";
@@ -11,6 +13,8 @@ import { authRoutes } from "./routes/auth.routes";
 import { shoppingRoutes } from "./routes/shopping.routes";
 
 import { marketRoutes } from "./routes/market.routes";
+
+import { uploadRoutes } from './routes/upload.routes';
 
 const app = express();
 
@@ -26,6 +30,15 @@ app.use(userRoutes);
 app.use(shoppingRoutes);
 
 app.use(marketRoutes);
+
+app.use(uploadRoutes)
+
+app.use(
+  '/uploads',
+  express.static(
+    path.resolve(__dirname, 'uploads'),
+  )
+)
 
 app.get("/health", (req, res) => {
   return res.status(200).json({
