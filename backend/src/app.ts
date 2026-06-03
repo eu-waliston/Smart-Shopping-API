@@ -1,20 +1,15 @@
 import path from 'path'
-
 import { errorMiddleware } from "./middlewares/error.middleware";
-
 import express from "express";
 import cors from "cors";
-
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./docs/swagger";
-
 import { userRoutes } from "./routes/user.routes";
 import { authRoutes } from "./routes/auth.routes";
 import { shoppingRoutes } from "./routes/shopping.routes";
-
 import { marketRoutes } from "./routes/market.routes";
-
 import { uploadRoutes } from './routes/upload.routes';
+import { flyerRoutes } from './routes/flyer.routes.js';
 
 const app = express();
 
@@ -24,14 +19,11 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(authRoutes);
-
 app.use(userRoutes);
-
 app.use(shoppingRoutes);
-
 app.use(marketRoutes);
-
-app.use(uploadRoutes)
+app.use(uploadRoutes);
+app.use(flyerRoutes);
 
 app.use(
   '/uploads',

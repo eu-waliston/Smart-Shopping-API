@@ -1,8 +1,8 @@
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import { UserRepository } from "../repositories/user.repository";
-import { AppError } from "../errors/app-error";
+import { UserRepository } from "../repositories/flyer.repository";
+import { AppError } from "../errors/app-error.js";
 
 interface LoginDTO {
   email: string;
@@ -43,5 +43,29 @@ export class AuthService {
       },
       token,
     };
+  }
+}
+
+export async function authenticateUser() {
+  const user = {
+    name: 'Tonton',
+    email: `user${Date.now()}@email.com`,
+    password: '123456',
+  }
+
+  await request(app)
+    .post('/users')
+    .send(user)
+
+  const loginResponse = await request(app)
+    .post('/login')
+    .send({
+      email: user.email,
+      password: user.password,
+    })
+
+  return {
+    token: loginResponse.body.data.token,
+    user,
   }
 }

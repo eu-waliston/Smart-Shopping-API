@@ -41,17 +41,17 @@ model ShoppingItem {
 }
 
 model Market {
-  id      String @id @default(uuid())
-  name    String
-  city    String
-  address String
+  id          String      @id @default(uuid())
 
-  latitude  Float?
-  longitude Float?
+  name        String
+  city        String
+  address     String
 
-  createdAt DateTime @default(now())
+  latitude    Float?
+  longitude   Float?
 
-  promotions Promotion[]
+  promotions  Promotion[]
+  flyers      Flyer[]
 }
 
 model Promotion {
@@ -66,4 +66,26 @@ model Promotion {
   createdAt DateTime @default(now())
   marketId  String
   market    Market   @relation(fields: [marketId], references: [id])
+}
+
+model Flyer {
+  id          String   @id @default(uuid())
+
+  title       String
+
+  description String?
+
+  imageUrl    String
+
+  startDate   DateTime?
+
+  endDate     DateTime?
+
+  isActive    Boolean  @default(true)
+
+  marketId    String
+  market      Market   @relation(fields: [marketId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
