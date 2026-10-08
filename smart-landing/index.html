@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Shopping API · listas inteligentes & promoções geolocalizadas</title>
+  <!-- Google Font & Font Awesome for clean icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafc;
+      color: #0b1b2b;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HEADER / NAV */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      color: #0f2b3d;
+    }
+
+    .logo i {
+      color: #2e7d5e;
+      font-size: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-weight: 500;
+      color: #2d3f50;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #2e7d5e;
+    }
+
+    .btn-outline {
+      border: 1.5px solid #2e7d5e;
+      background: transparent;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #1f4e3d;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline:hover {
+      background: #2e7d5e;
+      color: white;
+    }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 40px;
+      padding: 60px 0 70px;
+    }
+
+    .hero-content {
+      flex: 1 1 380px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: #e1f0e9;
+      color: #1d5b45;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 6px 16px;
+      border-radius: 40px;
+      margin-bottom: 22px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero h1 {
+      font-size: 3.1rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      color: #0f2b3d;
+    }
+
+    .hero h1 span {
+      color: #2e7d5e;
+      background: linear-gradient(145deg, #2e7d5e, #46a37c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #3e5468;
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: #2e7d5e;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 18px -6px rgba(46, 125, 94, 0.3);
+    }
+
+    .btn-primary i {
+      font-size: 1rem;
+    }
+
+    .btn-primary:hover {
+      background: #1f5f46;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1f4e3d;
+      padding: 14px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      border: 1px solid #d0dfd8;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #f4faf7;
+      border-color: #2e7d5e;
+    }
+
+    .hero-illustration {
+      flex: 1 1 320px;
+      background: linear-gradient(145deg, #eaf4ef, #d4e8df);
+      border-radius: 48px;
+      padding: 40px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 30px 40px -20px rgba(0, 0, 0, 0.15);
+    }
+
+    .mock-card {
+      background: white;
+      border-radius: 24px;
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.08);
+    }
+
+    .mock-icon {
+      background: #e1f0e9;
+      color: #2e7d5e;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .mock-text h4 {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .mock-text p {
+      font-size: 0.85rem;
+      color: #6a7e8c;
+    }
+
+    .distance-badge {
+      margin-left: auto;
+      background: #d9eee5;
+      color: #1b5e45;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 30px;
+    }
+
+    /* STATS BAR */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+      background: white;
+      border-radius: 60px;
+      padding: 28px 40px;
+      margin: 10px 0 60px;
+      box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e3eee8;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .stat-icon {
+      background: #eaf4ef;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2e7d5e;
+      font-size: 1.3rem;
+    }
+
+    .stat-text strong {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0b1b2b;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .stat-text span {
+      color: #5b6f7e;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: #0f2b3d;
+    }
+
+    .section-sub {
+      color: #4e6272;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin-bottom: 48px;
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 32px 24px;
+      border-radius: 32px;
+      box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #e0ece6;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 32px -12px rgba(46, 125, 94, 0.15);
+    }
+
+    .feature-icon {
+      background: #e1f0e9;
+      color: #2e7d5e;
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #0b1b2b;
+    }
+
+    .feature-card p {
+      color: #4e6272;
+      font-size: 0.95rem;
+    }
+
+    /* TECH STACK */
+    .tech-section {
+      background: white;
+      padding: 48px 40px;
+      border-radius: 48px;
+      margin: 40px 0 80px;
+      box-shadow: 0 8px 28px -16px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e3eee8;
+    }
+
+    .tech-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+    }
+
+    .tech-cat h4 {
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #2e7d5e;
+      margin-bottom: 16px;
+    }
+
+    .tech-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tech-tag {
+      background: #f3f9f6;
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1f4e3d;
+      border: 1px solid #d6e7df;
+    }
+
+    /* ENDPOINTS TABLE */
+    .endpoints-section {
+      margin-bottom: 80px;
+    }
+
+    .endpoints-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .endpoint-group {
+      background: white;
+      border-radius: 24px;
+      padding: 18px 20px;
+      box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e0ece6;
+    }
+
+    .endpoint-group h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #2e7d5e;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .endpoint-list {
+      list-style: none;
+      font-size: 0.9rem;
+    }
+
+    .endpoint-list li {
+      display: flex;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #dfebe5;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #1f3a4b;
+    }
+
+    .endpoint-list li:last-child {
+      border-bottom: none;
+    }
+
+    .method {
+      font-weight: 700;
+      min-width: 48px;
+      color: #2e7d5e;
+    }
+
+    .method.get { color: #2e7d5e; }
+    .method.post { color: #1f6e4a; }
+
+    /* CODE BLOCK / SETUP */
+    .setup-section {
+      background: #0b1f2b;
+      color: #e3f0ea;
+      border-radius: 40px;
+      padding: 48px 40px;
+      margin: 60px 0 60px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .setup-text {
+      flex: 1 1 280px;
+    }
+
+    .setup-text h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .setup-text p {
+      color: #aac2b9;
+      margin-bottom: 28px;
+    }
+
+    .code-block {
+      background: #102b3a;
+      border-radius: 20px;
+      padding: 22px 24px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #cbe6dc;
+      border: 1px solid #1e4253;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .code-block .line {
+      display: block;
+    }
+
+    .code-block .comment {
+      color: #6f9b89;
+    }
+
+    .code-block .cmd {
+      color: #b5e0d0;
+    }
+
+    .setup-badge {
+      display: inline-block;
+      background: #1e4d3e;
+      color: #a0e0c8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 40px;
+      margin-bottom: 14px;
+    }
+
+    /* CTA */
+    .cta-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(125deg, #e1f0e9, #d0e8dd);
+      border-radius: 48px;
+      padding: 48px 48px;
+      margin: 60px 0 80px;
+      gap: 24px;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0b2b20;
+      letter-spacing: -0.02em;
+      max-width: 500px;
+    }
+
+    .cta-section .btn-primary {
+      background: #1e4d3e;
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid #d9e8e1;
+      padding: 36px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.9rem;
+      color: #4e6272;
+    }
+
+    .footer .author i {
+      color: #2e7d5e;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .hero h1 {
+        font-size: 2.3rem;
+      }
+      .hero {
+        padding: 30px 0 40px;
+      }
+      .stats {
+        border-radius: 32px;
+        padding: 24px 20px;
+      }
+      .tech-section {
+        padding: 32px 24px;
+      }
+      .setup-section {
+        padding: 32px 24px;
+        border-radius: 32px;
+      }
+      .cta-section {
+        padding: 32px 24px;
+        border-radius: 32px;
+      }
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .endpoint-list li {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-cart-shopping"></i>
+        <span>Smart Shopping</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Funcionalidades</a>
+        <a href="#tech">Tecnologias</a>
+        <a href="#endpoints">Endpoints</a>
+        <a href="#setup">Começar</a>
+      </div>
+      <a href="#" class="btn-outline">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-bolt" style="margin-right: 6px;"></i> API de listas inteligentes
+        </div>
+        <h1>
+          Compre melhor, <span>economize</span> com geolocalização
+        </h1>
+        <p>
+          Backend completo para listas de compras, promoções de mercados próximos e comparação de preços.
+          Arquitetura escalável, documentação Swagger e testes automatizados.
+        </p>
+        <div class="hero-actions">
+          <a href="#setup" class="btn-primary">
+            <i class="fas fa-rocket"></i> Começar agora
+          </a>
+          <a href="#endpoints" class="btn-secondary">
+            <i class="fas fa-code"></i> Ver endpoints
+          </a>
+        </div>
+      </div>
+      <div class="hero-illustration">
+        <div class="mock-card">
+          <div class="mock-icon"><i class="fas fa-map-pin"></i></div>
+          <div class="mock-text">
+            <h4>Mercado Bom Preço</h4>
+            <p>2 promoções ativas</p>
+          </div>
+          <span class="distance-badge">1.2 km</span>
+        </div>
+        <div class="mock-card">
+          <div class="mock-icon"><i class="fas fa-tag"></i></div>
+          <div class="mock-text">
+            <h4>Arroz 5kg</h4>
+            <p>R$ 22,90 · 18% off</p>
+          </div>
+          <span class="distance-badge">800 m</span>
+        </div>
+        <div class="mock-card">
+          <div class="mock-icon"><i class="fas fa-list-check"></i></div>
+          <div class="mock-text">
+            <h4>Lista da semana</h4>
+            <p>8 itens · 3 mercados</p>
+          </div>
+          <span class="distance-badge">econ.</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-store"></i></div>
+        <div class="stat-text">
+          <strong>+200</strong>
+          <span>mercados parceiros</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-location-dot"></i></div>
+        <div class="stat-text">
+          <strong>5 km</strong>
+          <span>raio de geolocalização</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+        <div class="stat-text">
+          <strong>100%</strong>
+          <span>testes automatizados</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <h2 class="section-title">Tudo que sua lista precisa</h2>
+      <p class="section-sub">
+        Da autenticação à geolocalização de promoções, a Smart Shopping API entrega recursos prontos para integração.
+      </p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-user-lock"></i></div>
+          <h3>Autenticação JWT</h3>
+          <p>Cadastro seguro, login e rotas protegidas com tokens JWT e senhas criptografadas com bcrypt.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-list-check"></i></div>
+          <h3>Listas inteligentes</h3>
+          <p>Crie, gerencie e marque itens. Adicione produtos e organize suas compras de forma simples.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-map-location-dot"></i></div>
+          <h3>Geolocalização</h3>
+          <p>Busque mercados próximos, promoções por distância e ordenação geográfica com latitude e longitude.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-percent"></i></div>
+          <h3>Promoções por categoria</h3>
+          <p>Filtre ofertas por categoria e encontre as melhores oportunidades perto de você.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section id="tech" class="tech-section">
+      <h2 class="section-title" style="font-size: 1.8rem;">Stack robusta e moderna</h2>
+      <p class="section-sub" style="margin-bottom: 36px;">Tecnologias escolhidas para escalar e manter a qualidade.</p>
+      <div class="tech-categories">
+        <div class="tech-cat">
+          <h4>Backend</h4>
+          <div class="tech-items">
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">Express</span>
+            <span class="tech-tag">TypeScript</span>
+          </div>
+        </div>
+        <div class="tech-cat">
+          <h4>Banco de dados</h4>
+          <div class="tech-items">
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">Prisma ORM</span>
+          </div>
+        </div>
+        <div class="tech-cat">
+          <h4>Autenticação & validação</h4>
+          <div class="tech-items">
+            <span class="tech-tag">JWT</span>
+            <span class="tech-tag">bcryptjs</span>
+            <span class="tech-tag">Zod</span>
+          </div>
+        </div>
+        <div class="tech-cat">
+          <h4>Testes & docs</h4>
+          <div class="tech-items">
+            <span class="tech-tag">Jest</span>
+            <span class="tech-tag">Supertest</span>
+            <span class="tech-tag">Swagger</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENDPOINTS PRINCIPAIS -->
+    <section id="endpoints" class="endpoints-section">
+      <h2 class="section-title">Endpoints principais</h2>
+      <p class="section-sub">Rotas essenciais para integrar sua aplicação.</p>
+      <div class="endpoints-grid">
+        <div class="endpoint-group">
+          <h4><i class="fas fa-key"></i> Auth</h4>
+          <ul class="endpoint-list">
+            <li><span class="method post">POST</span> /login</li>
+          </ul>
+        </div>
+        <div class="endpoint-group">
+          <h4><i class="fas fa-users"></i> Users</h4>
+          <ul class="endpoint-list">
+            <li><span class="method post">POST</span> /users</li>
+            <li><span class="method get">GET</span> /users</li>
+          </ul>
+        </div>
+        <div class="endpoint-group">
+          <h4><i class="fas fa-cart-plus"></i> Shopping Lists</h4>
+          <ul class="endpoint-list">
+            <li><span class="method post">POST</span> /shopping-lists</li>
+            <li><span class="method get">GET</span> /shopping-lists</li>
+          </ul>
+        </div>
+        <div class="endpoint-group">
+          <h4><i class="fas fa-store-alt"></i> Markets</h4>
+          <ul class="endpoint-list">
+            <li><span class="method post">POST</span> /markets</li>
+            <li><span class="method get">GET</span> /markets</li>
+          </ul>
+        </div>
+        <div class="endpoint-group">
+          <h4><i class="fas fa-fire"></i> Promotions</h4>
+          <ul class="endpoint-list">
+            <li><span class="method post">POST</span> /promotions</li>
+            <li><span class="method get">GET</span> /promotions</li>
+            <li><span class="method get">GET</span> /promotions/category/:category</li>
+            <li><span class="method get">GET</span> /promotions/nearby</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETUP / INSTALAÇÃO -->
+    <section id="setup" class="setup-section">
+      <div class="setup-text">
+        <div class="setup-badge"><i class="fas fa-terminal"></i> Setup rápido</div>
+        <h3>Comece em minutos</h3>
+        <p>Clone o repositório, configure o banco e rode as migrations. Documentação Swagger disponível em <code style="background: #1e4253; padding: 2px 8px; border-radius: 20px;">/api-docs</code>.</p>
+        <div class="code-block">
+          <span class="line"><span class="comment"># clonar projeto</span></span>
+          <span class="line"><span class="cmd">git clone https://github.com/seu-usuario/smart-shopping-api.git</span></span>
+          <span class="line" style="margin-top: 8px;"><span class="comment"># configurar .env</span></span>
+          <span class="line"><span class="cmd">DATABASE_URL=postgresql://usuario:senha@localhost:5432/smart_shopping</span></span>
+          <span class="line"><span class="cmd">JWT_SECRET="supersecretjwt"</span></span>
+          <span class="line" style="margin-top: 8px;"><span class="comment"># rodar migrations</span></span>
+          <span class="line"><span class="cmd">npx prisma migrate dev</span></span>
+          <span class="line" style="margin-top: 8px;"><span class="comment"># iniciar aplicação</span></span>
+          <span class="line"><span class="cmd">npm run dev</span></span>
+        </div>
+      </div>
+      <div style="flex: 1 1 180px; display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px; color: #b5e0d0;">
+          <i class="fas fa-check-circle" style="color: #6fcf97;"></i> <span>Testes com Jest + Supertest</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; color: #b5e0d0;">
+          <i class="fas fa-check-circle" style="color: #6fcf97;"></i> <span>Documentação Swagger interativa</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; color: #b5e0d0;">
+          <i class="fas fa-check-circle" style="color: #6fcf97;"></i> <span>Arquitetura em camadas</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; color: #b5e0d0;">
+          <i class="fas fa-check-circle" style="color: #6fcf97;"></i> <span>Validação com Zod</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <div class="cta-section">
+      <h2>Pronto para transformar listas em economia?</h2>
+      <a href="#" class="btn-primary" style="font-size: 1.1rem; padding: 16px 40px;">
+        <i class="fas fa-code-branch"></i> Acessar repositório
+      </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="author">
+        <i class="fas fa-crown"></i> Desenvolvido por <strong>Tonton</strong> 🚀
+      </div>
+      <div>
+        <i class="fas fa-balance-scale"></i> Licença MIT
+      </div>
+      <div>
+        <i class="fas fa-map-pin"></i> Geolocalização inteligente
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
